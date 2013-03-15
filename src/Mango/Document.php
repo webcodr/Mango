@@ -4,16 +4,14 @@ namespace Mango;
 
 use Collection\MutableMap;
 
-class Document implements DocumentInterface {
+abstract class Document implements DocumentInterface {
     protected $database;
-    protected $collection;
     protected $fields = array();
     public $_id;
 
-    public function __construct($database, $collection)
+    public function __construct($database)
     {
         $this->database = $database;
-        $this->collection = $collection;
         $this->_id = new \MongoId();
     }
 
@@ -24,7 +22,10 @@ class Document implements DocumentInterface {
 
     public function getCollection()
     {
-        return $this->collection;
+        $name = join('', array_slice(explode('\\', get_class($this)), -1));
+        $name = strtolower($name);
+
+        return $name;
     }
 
     public function getProperties()
