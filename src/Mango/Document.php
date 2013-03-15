@@ -30,8 +30,17 @@ abstract class Document implements DocumentInterface {
 
     public function getProperties()
     {
-        $properties = get_object_vars($this);
+        $reflectionClass = new \ReflectionClass($this);
+        $properties = new MutableMap();
 
-        return new MutableMap($properties);
+        foreach ($reflectionClass->getProperties() as $property) {
+            $name = $property->name;
+
+            if ($property->class == $reflectionClass->name) {
+                $properties->setProperty($name, $this->{$name});
+            }
+        }
+
+        return $properties;
     }
 }
