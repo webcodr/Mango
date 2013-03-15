@@ -20,9 +20,13 @@ class DocumentManager
 
     public function store(DocumentInterface $document)
     {
+        if (!isset($document->_id) || !$document->_id instanceof \MongoId) {
+            throw new \InvalidArgumentException('Document does not contain a valid MongoID.');
+        }
+
         $collection = $this->getCollection(
             $document->getDatabase(),
-            $document->getCollection()
+            $document->getCollectionName()
         );
 
         $data = $document->getProperties()->getArray();
@@ -31,14 +35,14 @@ class DocumentManager
 
     public function remove(DocumentInterface $document)
     {
-        $collection = $this->getCollection(
-            $document->getDatabase(),
-            $document->getCollection()
-        );
-
         if (!isset($document->_id) || !$document->_id instanceof \MongoId) {
             throw new \InvalidArgumentException('Document does not contain a valid MongoID.');
         }
+
+        $collection = $this->getCollection(
+            $document->getDatabase(),
+            $document->getCollectionName()
+        );
 
         $collection->remove($document->_id);
     }

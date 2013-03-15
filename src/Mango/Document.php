@@ -20,7 +20,7 @@ abstract class Document implements DocumentInterface {
         return $this->database;
     }
 
-    public function getCollection()
+    public function getCollectionName()
     {
         $name = join('', array_slice(explode('\\', get_class($this)), -1));
         $name = strtolower($name);

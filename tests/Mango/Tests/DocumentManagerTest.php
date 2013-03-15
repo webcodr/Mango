@@ -21,4 +21,18 @@ class DocumentManagerTest extends \PHPUnit_Framework_TestCase {
         $dm->store($document);
         $dm->remove($document);
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+
+    public function testStoreWithDamagedDocument()
+    {
+        $mango = $this->getConnection();
+        $dm = new DocumentManager($mango);
+        $document = new User();
+        $document->_id = 'dsfdsjkfhs';
+        $document->name = 'Foo Bar';
+        $dm->store($document);
+    }
 }

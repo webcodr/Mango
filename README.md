@@ -42,12 +42,15 @@ class User extends Document
     public function __construct()
     {
         $database = 'myproject';
-        $collection = 'user';
 
-        parent::__construct($myproject, $collection);
+        parent::__construct($myproject);
     }
 }
 ~~~
+
+You don't have to set a collection name. Mango uses the class name in lower case as collection name.
+
+If you want to set a custom collection name, just override the method `getCollectionName` in your own document classes.
 
 There's no need to provide an id. Mango's document base class adds automatically the property '_id' with a fresh MongoId object.
 
