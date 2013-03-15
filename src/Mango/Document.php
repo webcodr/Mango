@@ -9,15 +9,9 @@ abstract class Document implements DocumentInterface {
     protected $fields = array();
     public $_id;
 
-    public function __construct($database)
+    public function __construct()
     {
-        $this->database = $database;
         $this->_id = new \MongoId();
-    }
-
-    public function getDatabase()
-    {
-        return $this->database;
     }
 
     public function getCollectionName()
@@ -33,12 +27,9 @@ abstract class Document implements DocumentInterface {
         $reflectionClass = new \ReflectionClass($this);
         $properties = new MutableMap();
 
-        foreach ($reflectionClass->getProperties() as $property) {
+        foreach ($reflectionClass->getProperties(\ReflectionProperty::IS_PUBLIC) as $property) {
             $name = $property->name;
-
-            if ($property->class == $reflectionClass->name) {
-                $properties->setProperty($name, $this->{$name});
-            }
+            $properties->setProperty($name, $this->{$name});
         }
 
         return $properties;
