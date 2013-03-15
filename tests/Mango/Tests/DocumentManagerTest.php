@@ -9,7 +9,7 @@ use Mango\Tests\Document\User;
 class DocumentManagerTest extends \PHPUnit_Framework_TestCase {
     private function getConnection()
     {
-        return new Mango('mongodb://localhost:27017');
+        return new Mango('mongodb://localhost:27017/mango-unittests');
     }
 
     public function testStore()
