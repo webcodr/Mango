@@ -22,7 +22,7 @@ class DocumentManager
         $collection = $this->connection->selectCollection($document);
 
         $data = $document->getProperties()->getArray();
-        print_r($collection->save($data));
+        $collection->save($data);
     }
 
     public function remove(DocumentInterface $document)
