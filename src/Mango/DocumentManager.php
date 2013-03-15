@@ -13,24 +13,16 @@ class DocumentManager
         $this->connection = $mango->getConnection();
     }
 
-    protected function getCollection($database, $collection)
-    {
-        return $this->connection->selectCollection($database, $collection);
-    }
-
     public function store(DocumentInterface $document)
     {
         if (!isset($document->_id) || !$document->_id instanceof \MongoId) {
             throw new \InvalidArgumentException('Document does not contain a valid MongoID.');
         }
 
-        $collection = $this->getCollection(
-            $document->getDatabase(),
-            $document->getCollectionName()
-        );
+        $collection = $this->connection->selectCollection($document);
 
         $data = $document->getProperties()->getArray();
-        $collection->save($data);
+        print_r($collection->save($data));
     }
 
     public function remove(DocumentInterface $document)
@@ -39,10 +31,7 @@ class DocumentManager
             throw new \InvalidArgumentException('Document does not contain a valid MongoID.');
         }
 
-        $collection = $this->getCollection(
-            $document->getDatabase(),
-            $document->getCollectionName()
-        );
+        $collection = $this->connection->selectCollection($document);
 
         $collection->remove($document->_id);
     }
