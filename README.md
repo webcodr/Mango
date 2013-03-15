@@ -38,13 +38,6 @@ class User extends Document
 {
     public $name;
     public $email;
-
-    public function __construct()
-    {
-        $database = 'myproject';
-
-        parent::__construct($myproject);
-    }
 }
 ~~~
 
@@ -64,7 +57,7 @@ use Mango\DocumentManager;
 
 use Document\User;
 
-$mango = new Mango('mongodb://devserver:27017');
+$mango = new Mango('mongodb://devserver:27017/galactica-actual');
 $dm = new DocumentManager($mango);
 $user = new User();
 $user->name = 'William Adama';
