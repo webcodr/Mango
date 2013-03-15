@@ -1,0 +1,56 @@
+{
+    "hash": "e7591642659087fab0483e2c97077179",
+    "packages": [
+        {
+            "name": "webcodr/collection",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/WebCodr/Collection",
+                "reference": "ed2159292ad0ebcf057de82bdb3f592f3577b836"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/WebCodr/Collection/zipball/ed2159292ad0ebcf057de82bdb3f592f3577b836",
+                "reference": "ed2159292ad0ebcf057de82bdb3f592f3577b836",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "time": "2013-02-10 00:48:40",
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Collection": "src"
+                }
+            },
+            "notification-url": "http://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Henning",
+                    "email": "madcat.me@gmail.com",
+                    "homepage": "http://webcodr.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Collection library for PHP",
+            "homepage": "https://github.com/WebCodr/Collection",
+            "keywords": [
+                "array",
+                "collection"
+            ]
+        }
+    ],
+    "packages-dev": null,
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "webcodr/collection": 20
+    }
+}

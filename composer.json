@@ -1,0 +1,25 @@
+{
+    "name": "webcodr/mango",
+    "type": "library",
+    "description": "Object document mapper for MongoDB",
+    "keywords": ["mongo", "mongodb", "ODM"],
+    "homepage": "https://github.com/WebCodr/Mango",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "David Henning",
+            "email": "madcat.me@gmail.com",
+            "homepage": "http://webcodr.de",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "webcodr/collection": "*@dev"
+    },
+    "autoload": {
+        "psr-0": {
+            "Mango": "src"
+        }
+    }
+}
