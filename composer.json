@@ -1,7 +1,7 @@
 {
     "name": "webcodr/mango",
     "type": "library",
-    "description": "Object document mapper for MongoDB",
+    "description": "A MongoDB object document mapper for PHP",
     "keywords": ["mongo", "mongodb", "ODM"],
     "homepage": "https://github.com/WebCodr/Mango",
     "license": "MIT",
@@ -15,7 +15,8 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "webcodr/collection": "*@dev"
+        "ext-mongo": ">=1.2.0",
+        "webcodr/collection": "1.0.*"
     },
     "autoload": {
         "psr-0": {

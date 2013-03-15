@@ -1,31 +1,30 @@
 {
-    "hash": "e7591642659087fab0483e2c97077179",
+    "hash": "3126a7ed70745027f99630fbf885bf5e",
     "packages": [
         {
             "name": "webcodr/collection",
-            "version": "dev-master",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/WebCodr/Collection",
-                "reference": "ed2159292ad0ebcf057de82bdb3f592f3577b836"
+                "url": "https://github.com/WebCodr/Collection.git",
+                "reference": "1.0.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WebCodr/Collection/zipball/ed2159292ad0ebcf057de82bdb3f592f3577b836",
-                "reference": "ed2159292ad0ebcf057de82bdb3f592f3577b836",
+                "url": "https://api.github.com/repos/WebCodr/Collection/zipball/1.0.0",
+                "reference": "1.0.0",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4.0"
+                "php": ">=5.3.4"
             },
-            "time": "2013-02-10 00:48:40",
             "type": "library",
             "autoload": {
                 "psr-0": {
                     "Collection": "src"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -42,15 +41,25 @@
             "keywords": [
                 "array",
                 "collection"
-            ]
+            ],
+            "time": "2013-03-02 23:58:56"
         }
     ],
-    "packages-dev": null,
+    "packages-dev": [
+
+    ],
     "aliases": [
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "webcodr/collection": 20
-    }
+    "stability-flags": [
+
+    ],
+    "platform": {
+        "php": ">=5.4.0",
+        "ext-mongo": ">=1.2.0"
+    },
+    "platform-dev": [
+
+    ]
 }
