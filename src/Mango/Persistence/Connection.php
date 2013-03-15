@@ -2,10 +2,13 @@
 
 namespace Mango\Persistence;
 
+use Mango\DocumentInterface;
+
 class Connection {
     private $mongo;
     private $server;
     private $options;
+    private $database;
 
     public function __construct($server, $options = array())
     {
@@ -62,13 +65,25 @@ class Connection {
     public function selectDatabase($db)
     {
         $this->initialize();
-        return $this->wrapDatabase($db);
+        $database = $this->wrapDatabase($db);
+        $this->database = $database;
+
+        return $database;
     }
 
-    public function selectCollection($db, $collection)
+    public function getDatabase()
+    {
+        if (!$this->database instanceof Database) {
+            throw new \Exception('No database selected.');
+        }
+
+        return $this->database;
+    }
+
+    public function selectCollection(DocumentInterface $document)
     {
         $this->initialize();
-        return $this->selectDatabase($db)->selectCollection($collection);
+        return $this->getDatabase()->selectCollection($document->getCollectionName());
     }
 
     public function wrapDatabase($db)
