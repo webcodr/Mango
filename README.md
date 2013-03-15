@@ -50,7 +50,7 @@ class User extends Document
 
 You don't have to set a collection name. Mango uses the class name in lower case as collection name.
 
-If you want to set a custom collection name, just override the method `getCollectionName` in your own document classes.
+If you want to set a custom collection name, just override the method `getCollectionName()` in your own document classes.
 
 There's no need to provide an id. Mango's document base class adds automatically the property '_id' with a fresh MongoId object.
 
@@ -65,7 +65,7 @@ use Mango\DocumentManager;
 use Document\User;
 
 $mango = new Mango('mongodb://devserver:27017');
-$dm = new DocumentManager($mongo);
+$dm = new DocumentManager($mango);
 $user = new User();
 $user->name = 'William Adama';
 $user->email 'william.adama@galactica.colonial-forces.gov';
