@@ -9,17 +9,20 @@ class Mango
 {
     private $uri;
     private $connection;
+    private $database;
 
-    public function __construct($uri, $autoConnect = true)
+    public function __construct($uri)
     {
         if (parse_url($uri, PHP_URL_SCHEME) !== 'mongodb') {
             throw new ConnectionException('Please set a valid MongoDB URI.');
         }
 
-        $this->uri = $uri;
+        $this->connect($uri);
 
-        if ($autoConnect === true) {
-            $this->connect();
+        $database = basename($uri);
+
+        if (!empty($database)) {
+            $this->database = $this->getConnection()->selectDatabase($database);
         }
     }
 
@@ -28,9 +31,9 @@ class Mango
         $this->disconnect();
     }
 
-    public function connect()
+    private function connect($uri)
     {
-        $connection = new Connection($this->uri);
+        $connection = new Connection($uri);
         $connection->connect();
         $this->connection = $connection;
     }
