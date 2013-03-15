@@ -1,6 +1,6 @@
 <?php
 
-namespace Mango\Test;
+namespace Mango\Tests;
 
 use Mango\Mango;
 
