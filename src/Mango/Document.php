@@ -4,7 +4,8 @@ namespace Mango;
 
 use Collection\MutableMap;
 
-abstract class Document implements DocumentInterface {
+abstract class Document implements DocumentInterface
+{
     protected $database;
     protected $fields = array();
     public $_id;
