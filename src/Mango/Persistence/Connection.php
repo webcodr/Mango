@@ -40,7 +40,12 @@ class Connection {
 
     public function isConnected()
     {
-        return $this->mongo !== null && $this->mongo instanceof \Mongo && $this->mongo->connected;
+        return $this->mongo !== null
+            && (
+                $this->mongo instanceof \Mongo
+                || $this->mongo instanceof \MongoClient
+            )
+            && $this->mongo->connected;
     }
 
     public function connect()
