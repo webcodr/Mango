@@ -1,7 +1,4 @@
-# Collection classes for PHP #
+# Mango
+## A MongoDB object document mapper for PHP
 
-[![Build Status](https://travis-ci.org/WebCodr/Collection.png?branch=master)](https://travis-ci.org/WebCodr/Collection)
-
-- ArrayMap
-- Immutable Map
-- Mutable Map
+[![Build Status](https://travis-ci.org/WebCodr/Mango.png?branch=master)](https://travis-ci.org/WebCodr/Mango)
