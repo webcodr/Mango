@@ -17,6 +17,20 @@ class Cursor implements \IteratorAggregate
         $this->hydrate = $hydrate;
     }
 
+    public function __call($method, $arguments)
+    {
+        $object = $this;
+
+        if (method_exists(new MutableMap(), $method)) {
+            $object = $this->getDocuments();
+        }
+
+        return call_user_func_array(
+            [$object, $method],
+            $arguments
+        );
+    }
+
     public function count()
     {
         return $this->cursor->count();
@@ -36,7 +50,7 @@ class Cursor implements \IteratorAggregate
         return $this;
     }
 
-    public function getIterator()
+    private function getDocuments()
     {
         $data = [];
 
@@ -50,8 +64,11 @@ class Cursor implements \IteratorAggregate
             }
         }
 
-        $map = new MutableMap($data);
+        return new MutableMap($data);
+    }
 
-        return $map->getIterator();
+    public function getIterator()
+    {
+        return $this->getDocuments()->getIterator();
     }
 }
