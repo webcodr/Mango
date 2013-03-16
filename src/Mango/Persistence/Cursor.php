@@ -9,7 +9,7 @@ use Collection\MutableMap;
  * @package Mango\Persistence
  */
 
-class Cursor implements \IteratorAggregate
+class Cursor implements \IteratorAggregate, \Countable
 {
     private $cursor;
     private $hydrate = true;
