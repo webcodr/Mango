@@ -2,8 +2,22 @@
 
 namespace Mango\Helper;
 
+/**
+ * Class Dehydrator
+ * @package Mango\Helper
+ */
+
 class Dehydrator
 {
+    /**
+     * Dehydrate a value on the basis of its type
+     *
+     * @param $value
+     * @param null $type
+     * @param null $default
+     * @return mixed
+     */
+
     public function dehydrate($value, $type = null, $default = null)
     {
         switch ($type) {
@@ -19,6 +33,13 @@ class Dehydrator
         return $value;
     }
 
+    /**
+     * Get a MongoId object of the value
+     *
+     * @param $value
+     * @return \MongoId
+     */
+
     private function getMongoId($value)
     {
         if (!$value instanceof \MongoId) {
@@ -27,6 +48,14 @@ class Dehydrator
 
         return $value;
     }
+
+    /**
+     * Get a MongoDate object from the value (DateTime object) or set the default value from the field config
+     *
+     * @param $value
+     * @param $default
+     * @return \MongoDate
+     */
 
     private function getMongoDate($value, $default)
     {
