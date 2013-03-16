@@ -2,13 +2,23 @@
 
 namespace Mango\Persistence;
 
-use Mango\DocumentInterface;
+/**
+ * Class Connection
+ * @package Mango\Persistence
+ */
 
 class Connection {
     private $mongo;
     private $server;
     private $options;
     private $database;
+
+    /**
+     * Constructor
+     *
+     * @param $server
+     * @param array $options
+     */
 
     public function __construct($server, $options = array())
     {
@@ -19,6 +29,12 @@ class Connection {
             $this->options = $options;
         }
     }
+
+    /**
+     * Initiziale the MongoDB connection
+     *
+     * @param bool $reinitialize
+     */
 
     public function initialize($reinitialize = false)
     {
@@ -36,10 +52,22 @@ class Connection {
         }
     }
 
+    /**
+     * Get Mongo/MongoClient object
+     *
+     * @return \Mongo|\MongoClient
+     */
+
     public function getMongo()
     {
         return $this->mongo;
     }
+
+    /**
+     * Check if a connection to MongoDB is established
+     *
+     * @return bool
+     */
 
     public function isConnected()
     {
@@ -51,16 +79,31 @@ class Connection {
             && $this->mongo->connected;
     }
 
+    /**
+     * Connect to MongoDB
+     */
+
     public function connect()
     {
         $this->initialize();
     }
+
+    /**
+     * Disconnect from MongoDB
+     */
 
     public function disconnect()
     {
         $this->initialize();
         $this->mongo->close();
     }
+
+    /**
+     * Select a database
+     *
+     * @param $db
+     * @return Database
+     */
 
     public function selectDatabase($db)
     {
@@ -71,6 +114,13 @@ class Connection {
         return $database;
     }
 
+    /**
+     * Get Database object
+     *
+     * @return Database
+     * @throws \Exception
+     */
+
     public function getDatabase()
     {
         if (!$this->database instanceof Database) {
@@ -80,11 +130,25 @@ class Connection {
         return $this->database;
     }
 
+    /**
+     * Select a collection on the database
+     *
+     * @param $collection
+     * @return Collection
+     */
+
     public function selectCollection($collection)
     {
         $this->initialize();
         return $this->getDatabase()->selectCollection($collection);
     }
+
+    /**
+     * Wrap a database
+     *
+     * @param $db
+     * @return Database
+     */
 
     public function wrapDatabase($db)
     {
