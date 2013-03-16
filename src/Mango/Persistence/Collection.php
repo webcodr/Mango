@@ -2,7 +2,8 @@
 
 namespace Mango\Persistence;
 
-class Collection {
+class Collection
+{
     private $connection;
     private $name;
     private $database;
@@ -27,6 +28,19 @@ class Collection {
     public function getDatabase()
     {
         return $this->database;
+    }
+
+    public function where(array $query, $hydrationClassName)
+    {
+        return $this->wrapCursor(
+            $this->getMongoCollection()->find($query),
+            $hydrationClassName
+        );
+    }
+
+    public function wrapCursor(\MongoCursor $cursor, $hydrationClassName)
+    {
+        return new Cursor($cursor, $hydrationClassName, true);
     }
 
     public function save($document)
