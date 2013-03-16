@@ -144,9 +144,9 @@ trait Document
      * @return mixed
      */
 
-    private function prepare($properties)
+    private function prepare()
     {
-        return $properties;
+        return null;
     }
 
     /**
@@ -178,9 +178,9 @@ trait Document
     {
         $properties = new MutableMap();
         $dehydrator = new Dehydrator();
-        $data = $this->prepare($this->getProperties());
+        $this->prepare();
 
-        foreach ($data as $name => $property) {
+        foreach ($this->getProperties() as $name => $property) {
             $type = $this->getFieldConfig($name, 'type');
             $default = $this->getFieldConfig($name, 'default');
             $value = $dehydrator->dehydrate($this->{$name}, $type, $default);
