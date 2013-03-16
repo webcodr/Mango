@@ -26,20 +26,6 @@ class DocumentManagerTest extends \PHPUnit_Framework_TestCase {
         self::assertEquals(0, $document::where($dm, $query)->count());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-
-    public function testStoreWithDamagedDocument()
-    {
-        $mango = $this->getConnection();
-        $dm = new DocumentManager($mango);
-        $document = new User();
-        $document->_id = 'dsfdsjkfhs';
-        $document->name = 'Foo Bar';
-        $dm->store($document);
-    }
-
     public function testQuery()
     {
         $mango = $this->getConnection();
@@ -50,7 +36,25 @@ class DocumentManagerTest extends \PHPUnit_Framework_TestCase {
         $query = ['name' => 'Foo Bar'];
 
         $user = $document::where($dm, $query)->head();
-        self::assertEquals($document, $user);
+        self::assertEquals($document->getProperties(), $user->getProperties());
+
+        $dm->remove($document);
+        self::assertEquals(0, $document::where($dm, $query)->count());
+    }
+
+    public function testHydration()
+    {
+        $mango = $this->getConnection();
+        $dm = new DocumentManager($mango);
+        $document = new User();
+        $document->name = 'Foo Bar';
+        $dm->store($document);
+        $query = ['name' => 'Foo Bar'];
+
+        $user = $document::where($dm, $query)->head();
+        $user->updated_at = new \DateTime('+4 hours');
+        $dm->store($user);
+        self::assertEquals(1, $document::where($dm, $query)->count());
 
         $dm->remove($document);
         self::assertEquals(0, $document::where($dm, $query)->count());
