@@ -2,6 +2,7 @@
 
 namespace Mango;
 
+use Mango\DocumentManager;
 use Collection\MutableMap;
 
 trait Document
@@ -21,6 +22,18 @@ trait Document
         $name = strtolower($name);
 
         return $name;
+    }
+
+    public static function where(DocumentManager $dm, array $query)
+    {
+        return $dm->where(self::getCollectionName(), $query, __CLASS__);
+    }
+
+    public function hydrate(array $document)
+    {
+        foreach ($document as $property => $value) {
+            $this->{$property} = $value;
+        }
     }
 
     public function getProperties()
