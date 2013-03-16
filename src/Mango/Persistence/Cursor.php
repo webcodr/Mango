@@ -94,6 +94,20 @@ class Cursor implements \IteratorAggregate
     }
 
     /**
+     * Set sorting
+     *
+     * @param array $fields
+     * @return $this
+     */
+
+    public function sort(array $fields)
+    {
+        $this->cursor->sort($fields);
+
+        return $this;
+    }
+
+    /**
      * Get documents from the cursor as array or hydrated document objects
      *
      * @return MutableMap
