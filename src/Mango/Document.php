@@ -15,9 +15,9 @@ trait Document
         $this->_id = new \MongoId();
     }
 
-    public function getCollectionName()
+    public static function getCollectionName()
     {
-        $name = join('', array_slice(explode('\\', get_class($this)), -1));
+        $name = join('', array_slice(explode('\\', __CLASS__), -1));
         $name = strtolower($name);
 
         return $name;

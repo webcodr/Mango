@@ -83,7 +83,7 @@ class Connection {
     public function selectCollection(DocumentInterface $document)
     {
         $this->initialize();
-        return $this->getDatabase()->selectCollection($document->getCollectionName());
+        return $this->getDatabase()->selectCollection($document::getCollectionName());
     }
 
     public function wrapDatabase($db)
