@@ -80,10 +80,10 @@ class Connection {
         return $this->database;
     }
 
-    public function selectCollection(DocumentInterface $document)
+    public function selectCollection($collection)
     {
         $this->initialize();
-        return $this->getDatabase()->selectCollection($document::getCollectionName());
+        return $this->getDatabase()->selectCollection($collection);
     }
 
     public function wrapDatabase($db)
