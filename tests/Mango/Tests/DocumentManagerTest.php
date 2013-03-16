@@ -19,7 +19,11 @@ class DocumentManagerTest extends \PHPUnit_Framework_TestCase {
         $document = new User();
         $document->name = 'Foo Bar';
         $dm->store($document);
+        $query = ['name' => 'Foo Bar'];
+        self::assertEquals(1, $document::where($dm, $query)->count());
+
         $dm->remove($document);
+        self::assertEquals(0, $document::where($dm, $query)->count());
     }
 
     /**
