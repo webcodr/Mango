@@ -3,17 +3,29 @@
 namespace Mango;
 
 use Mango\DocumentManager;
+use Mango\Helper\Hydrator;
+use Mango\Helper\Dehydrator;
+
 use Collection\MutableMap;
 
 trait Document
 {
-    protected $database;
-    protected $fields = array();
+    private $fields = array();
     public $_id;
 
     public function __construct()
     {
         $this->_id = new \MongoId();
+
+        $this->addField(
+            '_id',
+            [
+                'type' => 'Id'
+            ]
+        );
+
+
+        $this->addFields();
     }
 
     public static function getCollectionName()
@@ -29,9 +41,40 @@ trait Document
         return $dm->where(self::getCollectionName(), $query, __CLASS__);
     }
 
-    public function hydrate(array $document)
+    private function addFields() {
+
+    }
+
+    private function addField($field, $config = [])
     {
-        foreach ($document as $property => $value) {
+        $this->fields[$field] = [
+            'name' => $field,
+            'config' => $config
+        ];
+    }
+
+    public function getField($field)
+    {
+        return $this->fields[$field];
+    }
+
+    private function getFieldConfig($name, $property = null)
+    {
+        if ($property === null) {
+            return $this->fields[$name]['config'];
+        }
+
+        return (isset($this->fields[$name]['config'][$property])) ? $this->fields[$name]['config'][$property] : null;
+    }
+
+    public function hydrate(array $data)
+    {
+        $hydrator = new Hydrator();
+
+        foreach ($data as $property => $value) {
+            $type = $this->getFieldConfig($property, 'type');
+            $value = $hydrator->hydrate($value, $type);
+
             $this->{$property} = $value;
         }
     }
@@ -40,10 +83,15 @@ trait Document
     {
         $reflectionClass = new \ReflectionClass($this);
         $properties = new MutableMap();
+        $dehydrator = new Dehydrator();
 
         foreach ($reflectionClass->getProperties(\ReflectionProperty::IS_PUBLIC) as $property) {
             $name = $property->name;
-            $properties->setProperty($name, $this->{$name});
+            $type = $this->getFieldConfig($name, 'type');
+            $default = $this->getFieldConfig($name, 'default');
+            $value = $dehydrator->dehydrate($this->{$name}, $type, $default);
+
+            $properties->setProperty($name, $value);
         }
 
         return $properties;
