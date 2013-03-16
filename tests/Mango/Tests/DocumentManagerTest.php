@@ -39,4 +39,20 @@ class DocumentManagerTest extends \PHPUnit_Framework_TestCase {
         $document->name = 'Foo Bar';
         $dm->store($document);
     }
+
+    public function testQuery()
+    {
+        $mango = $this->getConnection();
+        $dm = new DocumentManager($mango);
+        $document = new User();
+        $document->name = 'Foo Bar';
+        $dm->store($document);
+        $query = ['name' => 'Foo Bar'];
+
+        $user = $document::where($dm, $query)->head();
+        self::assertEquals($document, $user);
+
+        $dm->remove($document);
+        self::assertEquals(0, $document::where($dm, $query)->count());
+    }
 }
