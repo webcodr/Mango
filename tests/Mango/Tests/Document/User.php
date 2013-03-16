@@ -2,9 +2,12 @@
 
 namespace Mango\Tests\Document;
 
-use Mango\Document as MangoDocument;
+use Mango\Document;
+use Mango\DocumentInterface;
 
-class User extends MangoDocument
+class User implements DocumentInterface
 {
+    use Document;
+
     public $name;
 }

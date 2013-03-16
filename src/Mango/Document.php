@@ -4,7 +4,7 @@ namespace Mango;
 
 use Collection\MutableMap;
 
-abstract class Document implements DocumentInterface
+trait Document
 {
     protected $database;
     protected $fields = array();

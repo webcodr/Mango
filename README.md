@@ -33,9 +33,12 @@ Run `php composer.phar install`
 namespace Document\User;
 
 use Mango\Document;
+use Mango\DocumentInterface;
 
-class User extends Document
+class User implements DocumentInterface
 {
+    use Document;
+
     public $name;
     public $email;
 }
