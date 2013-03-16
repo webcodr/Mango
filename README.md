@@ -26,13 +26,6 @@ Run `php composer.phar install`
 ~~~ php
 <?php
 
-namespace Document\User;
-
-use Mango\Document;
-use Mango\DocumentInterface;
-
-<?php
-
 namespace Mango\Tests\Document;
 
 use Mango\Document;
