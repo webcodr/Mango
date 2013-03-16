@@ -1,10 +1,6 @@
 # Mango
 ## A MongoDB object document mapper for PHP
 
-Mango is currently only a few days old. At the moment you can only create your own document classes and store or remove them from a collection.
-
-Please come again in a few weeks when Mango will be much more usefull to you.
-
 [![Build Status](https://travis-ci.org/WebCodr/Mango.png?branch=master)](https://travis-ci.org/WebCodr/Mango)
 
 ### Requirements
@@ -72,6 +68,14 @@ $dm->store($user);
 
 ~~~ php
 $dm->remove($user);
+~~~
+
+#### Querying
+
+~~~ php
+$user = User::where($dm, ['name' => 'William Adama']);
+echo $user->count(); // result = 1
+echo $user->head()->email; // result = william.adama@galactica.colonial-forces.gov
 ~~~
 
 
