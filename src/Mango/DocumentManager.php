@@ -19,7 +19,7 @@ class DocumentManager
             throw new \InvalidArgumentException('Document does not contain a valid MongoID.');
         }
 
-        $collection = $this->connection->selectCollection($document);
+        $collection = $this->connection->selectCollection($document::getCollectionName());
 
         $data = $document->getProperties()->getArray();
         $collection->save($data);
@@ -31,8 +31,15 @@ class DocumentManager
             throw new \InvalidArgumentException('Document does not contain a valid MongoID.');
         }
 
-        $collection = $this->connection->selectCollection($document);
+        $collection = $this->connection->selectCollection($document::getCollectionName());
 
         $collection->remove($document->_id);
+    }
+
+    public function where($collection, array $query, $hydrationClassName)
+    {
+        $collection = $this->connection->selectCollection($collection);
+
+        return $collection->where($query, $hydrationClassName);
     }
 }
