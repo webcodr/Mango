@@ -3,6 +3,6 @@
 namespace Mango;
 
 interface DocumentInterface {
-    public function getCollectionName();
+    public static function getCollectionName();
     public function getProperties();
 }
