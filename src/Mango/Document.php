@@ -138,7 +138,19 @@ trait Document
     }
 
     /**
-     * Gel all public properties and dehydrates them
+     * Hook method to prepare for storage
+     *
+     * @param $properties
+     * @return mixed
+     */
+
+    private function prepare($properties)
+    {
+        return $properties;
+    }
+
+    /**
+     * Get all public properties
      *
      * @return MutableMap
      */
@@ -147,10 +159,28 @@ trait Document
     {
         $reflectionClass = new \ReflectionClass($this);
         $properties = new MutableMap();
-        $dehydrator = new Dehydrator();
 
         foreach ($reflectionClass->getProperties(\ReflectionProperty::IS_PUBLIC) as $property) {
             $name = $property->name;
+            $properties->setProperty($name, $this->{$name});
+        }
+
+        return $properties;
+    }
+
+    /**
+     * Get all public properties and dehydrates them for storage
+     *
+     * @return MutableMap
+     */
+
+    public function getDehydratedProperties()
+    {
+        $properties = new MutableMap();
+        $dehydrator = new Dehydrator();
+        $data = $this->prepare($this->getProperties());
+
+        foreach ($data as $name => $property) {
             $type = $this->getFieldConfig($name, 'type');
             $default = $this->getFieldConfig($name, 'default');
             $value = $dehydrator->dehydrate($this->{$name}, $type, $default);

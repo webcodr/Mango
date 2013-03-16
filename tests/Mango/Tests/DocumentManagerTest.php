@@ -36,7 +36,7 @@ class DocumentManagerTest extends \PHPUnit_Framework_TestCase {
         $query = ['name' => 'Foo Bar'];
 
         $user = $document::where($dm, $query)->head();
-        self::assertEquals($document->getProperties(), $user->getProperties());
+        self::assertEquals($document->getDehydratedProperties(), $user->getDehydratedProperties());
 
         $dm->remove($document);
         self::assertEquals(0, $document::where($dm, $query)->count());
