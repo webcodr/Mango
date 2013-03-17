@@ -107,7 +107,11 @@ class Collection
      * @param \MongoId $id
      */
 
-    public function remove(\MongoId $id) {
+    public function remove($id) {
+        if (!$id instanceof \MongoId) {
+            $id = new \MongoId($id);
+        }
+
         $this->getMongoCollection()->remove(['_id' => $id]);
     }
 }
