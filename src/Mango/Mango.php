@@ -12,14 +12,16 @@ use Mango\Exception\ConnectionException;
 
 class Mango
 {
-    private $uri;
     private $connection;
+    private static $documentManager;
+
     private $database;
 
     /**
      * Constructor
      *
      * @param $uri
+     * @throws  \Mango\Exception\ConnectionException
      */
 
     public function __construct($uri)
@@ -46,6 +48,29 @@ class Mango
     public function __destruct()
     {
         $this->disconnect();
+    }
+
+    /**
+     * @param DocumentManager $documentManager
+     */
+
+    public static function setDocumentManager(DocumentManager $documentManager)
+    {
+        self::$documentManager = $documentManager;
+    }
+
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
+
+    public static function getDocumentManager()
+    {
+        if (!self::$documentManager instanceof DocumentManager) {
+            throw new \Exception('Missing Document Manager!');
+        }
+
+        return self::$documentManager;
     }
 
     /**
