@@ -9,54 +9,54 @@ use Mango\Tests\Document\User;
 class DocumentManagerTest extends \PHPUnit_Framework_TestCase {
     private function getConnection()
     {
-        return new Mango('mongodb://localhost:27017/mango-unittests');
+        $mango = new Mango('mongodb://localhost:27017/mango-unittests');
+        $dm = new DocumentManager($mango);
+
+        return $mango;
     }
 
     public function testStore()
     {
         $mango = $this->getConnection();
-        $dm = new DocumentManager($mango);
         $document = new User();
         $document->name = 'Foo Bar';
-        $dm->store($document);
+        $document->store();
         $query = ['name' => 'Foo Bar'];
-        self::assertEquals(1, $document::where($dm, $query)->count());
+        self::assertEquals(1, $document::where($query)->count());
 
-        $dm->remove($document);
-        self::assertEquals(0, $document::where($dm, $query)->count());
+        $document->remove();
+        self::assertEquals(0, $document::where($query)->count());
     }
 
     public function testQuery()
     {
         $mango = $this->getConnection();
-        $dm = new DocumentManager($mango);
         $document = new User();
         $document->name = 'Foo Bar';
-        $dm->store($document);
+        $document->store();
         $query = ['name' => 'Foo Bar'];
 
-        $user = $document::where($dm, $query)->head();
+        $user = $document::where($query)->head();
         self::assertEquals($document->getDehydratedProperties(), $user->getDehydratedProperties());
 
-        $dm->remove($document);
-        self::assertEquals(0, $document::where($dm, $query)->count());
+        $document->remove();
+        self::assertEquals(0, $document::where($query)->count());
     }
 
     public function testHydration()
     {
         $mango = $this->getConnection();
-        $dm = new DocumentManager($mango);
         $document = new User();
         $document->name = 'Foo Bar';
-        $dm->store($document);
+        $document->store();
         $query = ['name' => 'Foo Bar'];
 
-        $user = $document::where($dm, $query)->head();
+        $user = $document::where($query)->head();
         $user->updated_at = new \DateTime('+4 hours');
-        $dm->store($user);
-        self::assertEquals(1, $document::where($dm, $query)->count());
+        $user->store();
+        self::assertEquals(1, $document::where($query)->count());
 
-        $dm->remove($document);
-        self::assertEquals(0, $document::where($dm, $query)->count());
+        $document->remove();
+        self::assertEquals(0, $document::where($query)->count());
     }
 }

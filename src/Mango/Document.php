@@ -2,7 +2,6 @@
 
 namespace Mango;
 
-use Mango\DocumentManager;
 use Mango\Helper\Hydrator;
 use Mango\Helper\Dehydrator;
 
@@ -40,6 +39,50 @@ trait Document
     }
 
     /**
+     * Store document to MongoDB
+     *
+     * @return $this
+     */
+
+    public function store()
+    {
+        $dm = Mango::getDocumentManager();
+        $dm->store($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove document from MongoDB
+     *
+     * @return $this
+     */
+
+    public function remove()
+    {
+        $dm = Mango::getDocumentManager();
+        $dm->remove($this);
+        $this->reset();
+
+        return $this;
+    }
+
+    /**
+     * Reset all public document properties
+     */
+
+    private function reset()
+    {
+        foreach($this->getProperties() as $name => $value) {
+            if ($name == '_id') {
+                $this->_id = new \MongoId();
+            } else {
+                $this->{$name} = null;
+            }
+        }
+    }
+
+    /**
      * Get collection name from class name (lower case)
      *
      * @return string
@@ -56,13 +99,14 @@ trait Document
     /**
      * Execute query
      *
-     * @param DocumentManager $dm
      * @param array $query
      * @return \Mango\Persistence\Cursor
      */
 
-    public static function where(DocumentManager $dm, array $query)
+    public static function where(array $query)
     {
+        $dm = Mango::getDocumentManager();
+
         return $dm->where(self::getCollectionName(), $query, __CLASS__);
     }
 
@@ -139,9 +183,6 @@ trait Document
 
     /**
      * Hook method to prepare for storage
-     *
-     * @param $properties
-     * @return mixed
      */
 
     private function prepare()
