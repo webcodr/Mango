@@ -97,6 +97,35 @@ trait Document
     }
 
     /**
+     * Get document(s) by id(s)
+     *
+     * @return Persistence\Cursor
+     * @throws \InvalidArgumentException
+     */
+
+    public static function find()
+    {
+        $args = func_get_args();
+
+        if (empty($args)) {
+            throw new \InvalidArgumentException('No Ids given.');
+        }
+
+        if (count($args) === 1) {
+            $id = current($args);
+            return self::where(['_id' => new \MongoId($id)]);
+        }
+
+        $ids = [];
+
+        foreach ($args as $id) {
+            $ids[] = new \MongoId($id);
+        }
+
+        return self::where(['_id' => ['$in' => $ids]]);
+    }
+
+    /**
      * Execute query
      *
      * @param array $query
