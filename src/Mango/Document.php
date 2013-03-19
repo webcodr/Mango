@@ -131,7 +131,7 @@ trait Document
      * @return \Mango\Persistence\Cursor
      */
 
-    public static function where(array $query)
+    public static function where(array $query = [])
     {
         $dm = Mango::getDocumentManager();
 

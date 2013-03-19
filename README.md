@@ -1,5 +1,6 @@
 # Mango
 ## A MongoDB object document mapper for PHP
+### Inspired by [Mongoid for Ruby](http://mongoid.org/en/mongoid/index.html)
 
 [![Build Status](https://travis-ci.org/WebCodr/Mango.png?branch=master)](https://travis-ci.org/WebCodr/Mango)
 
@@ -123,7 +124,7 @@ $user = User::find('abc', 'def', 'ghi')->head();
 ##### Find all documents in collection
 
 ~~~ php
-User::where([])->each(function($user) {
+User::where()->each(function($user) {
     echo $user->name;
 });
 ~~~
