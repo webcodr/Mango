@@ -89,19 +89,49 @@ $dm = new DocumentManager($mango);
 $user = new User();
 $user->name = 'William Adama';
 $user->email 'william.adama@galactica.colonial-forces.gov';
-$dm->store($user);
+$user->store();
 ~~~
 
 #### Remove a document
 
 ~~~ php
-$dm->remove($user);
+$user->remove();
 ~~~
 
 #### Querying
 
+The methods `find` and `where` return a \Mango\Persistence\Cursor object or an object of the class \Collection\MutableMap. It depends on which method is called.
+
+MutableMap is part of another WebCodr project called Collection. It provides several classes to replace PHP arrays and is much more fun to use. Check it out [here](https://github.com/WebCodr/Collection).
+
+Mango uses object hydration to automatically provide a result with document objects.
+
+##### Find documents by id
+
+###### One id
+
 ~~~ php
-$user = User::where($dm, ['name' => 'William Adama']);
+$user = User::find('abc')->head();
+~~~
+
+###### Multiple ids
+
+~~~ php
+$user = User::find('abc', 'def', 'ghi')->head();
+~~~
+
+##### Find all documents in collection
+
+~~~ php
+User::where([])->each(function($user) {
+    echo $user->name;
+});
+~~~
+
+##### Find a document with certain field value
+
+~~~ php
+$user = User::where(['name' => 'William Adama']);
 echo $user->count(); // result = 1
 echo $user->head()->email; // result = william.adama@galactica.colonial-forces.gov
 ~~~
