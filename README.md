@@ -1,8 +1,9 @@
 # Mango
-## A MongoDB object document mapper for PHP
-### Inspired by [Mongoid for Ruby](http://mongoid.org/en/mongoid/index.html)
 
 [![Build Status](https://travis-ci.org/WebCodr/Mango.png?branch=master)](https://travis-ci.org/WebCodr/Mango)
+
+### A MongoDB object document mapper for PHP
+#### Inspired by [Mongoid for Ruby](http://mongoid.org/en/mongoid/index.html)
 
 ### Requirements
 
