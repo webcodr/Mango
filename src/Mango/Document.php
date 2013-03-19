@@ -46,8 +46,8 @@ trait Document
 
     public function store()
     {
-        $dm = Mango::getDocumentManager();
-        $dm->store($this);
+        $this->ensureIndices();
+        Mango::getDocumentManager()->store($this);
 
         return $this;
     }
@@ -60,8 +60,7 @@ trait Document
 
     public function remove()
     {
-        $dm = Mango::getDocumentManager();
-        $dm->remove($this);
+        Mango::getDocumentManager()->remove($this);
         $this->reset();
 
         return $this;
@@ -236,6 +235,19 @@ trait Document
         }
 
         return $properties;
+    }
+
+    /**
+     * Ensure that indices are set
+     */
+
+    private function ensureIndices()
+    {
+        foreach ($this->getProperties() as $property => $value) {
+            if ($this->getFieldConfig($property, 'index') === true) {
+                Mango::getDocumentManager()->index($this, $property);
+            }
+        }
     }
 
     /**

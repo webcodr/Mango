@@ -51,6 +51,19 @@ class DocumentManager
     }
 
     /**
+     *
+     *
+     * @param DocumentInterface $document
+     * @param $field
+     */
+
+    public function index(DocumentInterface $document, $field)
+    {
+        $collection = $this->connection->selectCollection($document::getCollectionName());
+        $collection->getMongoCollection()->ensureIndex($field);
+    }
+
+    /**
      * Execute a query on a collection
      *
      * @param $collection
