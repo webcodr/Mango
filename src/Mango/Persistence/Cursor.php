@@ -42,11 +42,7 @@ class Cursor implements \IteratorAggregate, \Countable
 
     public function __call($method, $arguments)
     {
-        $object = $this;
-
-        if (method_exists(new MutableMap(), $method)) {
-            $object = $this->getDocuments();
-        }
+        $object = (method_exists($this, $method)) ? $this : $this->getDocuments();
 
         return call_user_func_array(
             [$object, $method],
