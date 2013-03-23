@@ -1,30 +1,31 @@
 {
-    "hash": "3126a7ed70745027f99630fbf885bf5e",
+    "hash": "69b08297f9032e23ad61467d19d905e7",
     "packages": [
         {
             "name": "webcodr/collection",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WebCodr/Collection.git",
-                "reference": "1.0.0"
+                "reference": "1.1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WebCodr/Collection/zipball/1.0.0",
-                "reference": "1.0.0",
+                "url": "https://api.github.com/repos/WebCodr/Collection/zipball/1.1.0",
+                "reference": "1.1.0",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.4"
             },
+            "time": "2013-03-19 23:20:00",
             "type": "library",
             "autoload": {
                 "psr-0": {
                     "Collection": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -41,25 +42,15 @@
             "keywords": [
                 "array",
                 "collection"
-            ],
-            "time": "2013-03-02 23:58:56"
+            ]
         }
     ],
-    "packages-dev": [
-
-    ],
+    "packages-dev": null,
     "aliases": [
 
     ],
     "minimum-stability": "stable",
     "stability-flags": [
-
-    ],
-    "platform": {
-        "php": ">=5.4.0",
-        "ext-mongo": ">=1.2.0"
-    },
-    "platform-dev": [
 
     ]
 }
