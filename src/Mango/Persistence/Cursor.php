@@ -115,9 +115,7 @@ class Cursor implements \IteratorAggregate, \Countable
 
         foreach ($this->cursor as $document) {
             if ($this->hydrate === true) {
-                $doc = new $this->hydrationClassName();
-                $doc->hydrate($document);
-                $data[] = $doc;
+                $data[] = new $this->hydrationClassName($document);
             } else {
                 $data[] = $document;
             }

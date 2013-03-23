@@ -21,21 +21,31 @@ trait Document
      * Constructor
      */
 
-    public function __construct()
+    public function __construct(array $properties = array())
     {
         // set new MongoId on object creation
         $this->_id = new \MongoId();
 
         // config for id field
-        $this->addField(
-            '_id',
-            [
-                'type' => 'Id'
-            ]
-        );
+        $this->addField('_id', ['type' => 'Id']);
 
         // call hook method (can be overridden in parent class)
         $this->addFields();
+
+        if (!empty($properties)) {
+            $this->hydrate($properties);
+        }
+    }
+
+    /**
+     * Get MongoId string
+     *
+     * @return string
+     */
+
+    public function getId()
+    {
+        return (string)$this->_id;
     }
 
     /**
@@ -197,7 +207,7 @@ trait Document
      * @param array $data
      */
 
-    public function hydrate(array $data)
+    private function hydrate(array $data)
     {
         $hydrator = new Hydrator();
 
