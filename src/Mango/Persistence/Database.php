@@ -9,20 +9,20 @@ namespace Mango\Persistence;
 
 class Database
 {
-    private $connection;
+    private $mongoDb;
     private $name;
 
     /**
      * Constructor
      *
-     * @param Connection $connection
      * @param $name
+     * * @param \MongoDB $mongoDb
      */
 
-    public function __construct(Connection $connection, $name)
+    public function __construct($name, \MongoDB $mongoDb)
     {
-        $this->connection = $connection;
         $this->name = $name;
+        $this->mongoDb = $mongoDb;
     }
 
     /**
@@ -37,17 +37,6 @@ class Database
     }
 
     /**
-     * Get the MongoDB object from the database
-     *
-     * @return \MongoDB
-     */
-
-    public function getMongoDB()
-    {
-        return $this->connection->getMongo()->selectDB($this->name);
-    }
-
-    /**
      * Select a collection on the database
      *
      * @param $name
@@ -56,6 +45,9 @@ class Database
 
     public function selectCollection($name)
     {
-        return new Collection($this->connection, $name, $this);
+        return new Collection(
+            $name,
+            $this->mongoDb->selectCollection($name)
+        );
     }
 }

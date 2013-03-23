@@ -53,17 +53,6 @@ class Connection {
     }
 
     /**
-     * Get Mongo/MongoClient object
-     *
-     * @return \Mongo|\MongoClient
-     */
-
-    public function getMongo()
-    {
-        return $this->mongo;
-    }
-
-    /**
      * Check if a connection to MongoDB is established
      *
      * @return bool
@@ -146,12 +135,15 @@ class Connection {
     /**
      * Wrap a database
      *
-     * @param $db
+     * @param $database
      * @return Database
      */
 
-    public function wrapDatabase($db)
+    public function wrapDatabase($database)
     {
-        return new Database($this, $db);
+        return new Database(
+            $database,
+            $this->mongo->selectDB($database)
+        );
     }
 }

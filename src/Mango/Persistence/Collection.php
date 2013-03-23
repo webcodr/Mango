@@ -9,23 +9,20 @@ namespace Mango\Persistence;
 
 class Collection
 {
-    private $connection;
     private $name;
-    private $database;
+    private $mongoCollection;
 
     /**
      * Constructor
      *
-     * @param Connection $connection
      * @param $name
-     * @param Database $db
+     * @param \MongoCollection $collection
      */
 
-    public function __construct(Connection $connection, $name, Database $db)
+    public function __construct($name, \MongoCollection $collection)
     {
-        $this->connection = $connection;
         $this->name = $name;
-        $this->database = $db;
+        $this->mongoCollection = $collection;
     }
 
     /**
@@ -37,17 +34,6 @@ class Collection
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Get MongoCollection object of the collection object
-     *
-     * @return \MongoCollection
-     */
-
-    private function getMongoCollection()
-    {
-        return $this->database->getMongoDB()->selectCollection($this->name);
     }
 
     /**
@@ -72,7 +58,7 @@ class Collection
     public function where(array $query, $hydrationClassName)
     {
         return $this->wrapCursor(
-            $this->getMongoCollection()->find($query),
+            $this->mongoCollection->find($query),
             $hydrationClassName
         );
     }
@@ -100,7 +86,7 @@ class Collection
 
     public function ensureIndex($fields, array $options = [])
     {
-        return $this->getMongoCollection()->ensureIndex($fields, $options);
+        return $this->mongoCollection->ensureIndex($fields, $options);
     }
 
     /**
@@ -112,7 +98,7 @@ class Collection
 
     public function deleteIndex($fields)
     {
-        return $this->getMongoCollection()->deleteIndex($fields);
+        return $this->mongoCollection->deleteIndex($fields);
     }
 
     /**
@@ -124,7 +110,7 @@ class Collection
 
     public function save($document)
     {
-        return $this->getMongoCollection()->save($document);
+        return $this->mongoCollection->save($document);
     }
 
     /**
@@ -139,6 +125,6 @@ class Collection
             $id = new \MongoId($id);
         }
 
-        return $this->getMongoCollection()->remove(['_id' => $id]);
+        return $this->mongoCollection->remove(['_id' => $id]);
     }
 }
