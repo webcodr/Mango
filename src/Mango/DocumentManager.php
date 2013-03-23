@@ -60,7 +60,7 @@ class DocumentManager
     public function index(DocumentInterface $document, $field)
     {
         $collection = $this->connection->selectCollection($document::getCollectionName());
-        $collection->getMongoCollection()->ensureIndex($field);
+        $collection->ensureIndex($field);
     }
 
     /**

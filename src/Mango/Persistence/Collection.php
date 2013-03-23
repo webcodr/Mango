@@ -45,7 +45,7 @@ class Collection
      * @return \MongoCollection
      */
 
-    public function getMongoCollection()
+    private function getMongoCollection()
     {
         return $this->database->getMongoDB()->selectCollection($this->name);
     }
@@ -91,20 +91,47 @@ class Collection
     }
 
     /**
+     * Create an index on the given field(s)
+     *
+     * @param $fields
+     * @param array $options
+     * @return bool
+     */
+
+    public function ensureIndex($fields, array $options = [])
+    {
+        return $this->getMongoCollection()->ensureIndex($fields, $options);
+    }
+
+    /**
+     * Delete index of the given field(s)
+     *
+     * @param $fields
+     * @return array
+     */
+
+    public function deleteIndex($fields)
+    {
+        return $this->getMongoCollection()->deleteIndex($fields);
+    }
+
+    /**
      * Save a document in the collection
      *
      * @param $document
+     * @return array|bool
      */
 
     public function save($document)
     {
-        $this->getMongoCollection()->save($document);
+        return $this->getMongoCollection()->save($document);
     }
 
     /**
      * Remove a document from the collection
      *
-     * @param \MongoId $id
+     * @param $id
+     * @return mixed
      */
 
     public function remove($id) {
@@ -112,6 +139,6 @@ class Collection
             $id = new \MongoId($id);
         }
 
-        $this->getMongoCollection()->remove(['_id' => $id]);
+        return $this->getMongoCollection()->remove(['_id' => $id]);
     }
 }
