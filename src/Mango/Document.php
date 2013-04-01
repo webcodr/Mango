@@ -330,6 +330,15 @@ trait Document
     public function allPrepared()
     {
         $attributes = new MutableMap();
+
+        foreach ($this->fields as $field) {
+            $attribute = $field['name'];
+
+            if (!$this->attributes->has($attribute)) {
+                $this->{$attribute} = $this->getFieldConfig($attribute, 'default');
+            }
+        }
+
         $this->prepare();
 
         $this->all()->each(function($value, $attribute) use($attributes) {

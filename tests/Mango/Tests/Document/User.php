@@ -13,7 +13,7 @@ class User implements DocumentInterface
     {
         $this->addField(
             'name',
-            []
+            ['default' => 'UnitTest']
         );
 
         $this->addField(

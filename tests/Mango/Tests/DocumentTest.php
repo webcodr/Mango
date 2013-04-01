@@ -104,4 +104,16 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $document->remove();
         self::assertEquals(0, $document::find($document->getId())->count());
     }
+
+    public function testDefaultValue()
+    {
+        $mango = $this->getConnection();
+        $document = new User();
+        $document->store();
+        print_r($document);
+
+        self::assertEquals('UnitTest', $document->name);
+        $document->remove();
+    }
+
 }
