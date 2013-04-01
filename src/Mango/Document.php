@@ -21,7 +21,7 @@ trait Document
      * Constructor
      */
 
-    public function __construct(array $properties = [])
+    public function __construct(array $attributes = [])
     {
         // set new MongoId on object creation
         $this->_id = new \MongoId();
@@ -32,8 +32,8 @@ trait Document
         // call hook method (can be overridden in parent class)
         $this->addFields();
 
-        if (!empty($properties)) {
-            $this->updateProperties($properties);
+        if (!empty($attributes)) {
+            $this->update($attributes);
         }
     }
 
@@ -82,7 +82,7 @@ trait Document
 
     private function reset()
     {
-        foreach ($this->getProperties() as $name => $value) {
+        foreach ($this->getAttributes() as $name => $value) {
             if ($name == '_id') {
                 $this->_id = new \MongoId();
             } else {
@@ -189,18 +189,18 @@ trait Document
      * Get field config or a specific config property
      *
      * @param $name
-     * @param null $property
+     * @param null $attribute
      * @return mixed
      */
 
-    private function getFieldConfig($name, $property = null)
+    private function getFieldConfig($name, $attribute = null)
     {
         // return the whole config
-        if ($property === null) {
+        if ($attribute === null) {
             return $this->fields[$name]['config'];
         }
 
-        return (isset($this->fields[$name]['config'][$property])) ? $this->fields[$name]['config'][$property] : null;
+        return (isset($this->fields[$name]['config'][$attribute])) ? $this->fields[$name]['config'][$attribute] : null;
     }
 
     /**
@@ -213,11 +213,11 @@ trait Document
     {
         $hydrator = new Hydrator();
 
-        foreach ($data as $property => $value) {
-            $type = $this->getFieldConfig($property, 'type');
+        foreach ($data as $attribute => $value) {
+            $type = $this->getFieldConfig($attribute, 'type');
             $value = $hydrator->hydrate($value, $type);
 
-            $this->{$property} = $value;
+            $this->{$attribute} = $value;
         }
     }
 
@@ -236,33 +236,33 @@ trait Document
      * @return MutableMap
      */
 
-    public function getProperties()
+    public function getAttributes()
     {
         $reflectionClass = new \ReflectionClass($this);
-        $properties = new MutableMap();
+        $attributes = new MutableMap();
 
-        foreach ($reflectionClass->getProperties(\ReflectionProperty::IS_PUBLIC) as $property) {
-            $name = $property->name;
-            $properties->set($name, $this->{$name});
+        foreach ($reflectionClass->getProperties(\ReflectionProperty::IS_PUBLIC) as $attribute) {
+            $name = $attribute->name;
+            $attributes->set($name, $this->{$name});
         }
 
-        return $properties;
+        return $attributes;
     }
 
     /**
      * Update document properties from given array
      *
-     * @param array $properties
+     * @param array $attributes
      * @return $this
      */
 
-    public function updateProperties(array $properties = [])
+    public function update(array $attributes = [])
     {
         $this
-            ->getProperties()
-            ->update($properties)
-            ->each(function($value, $property) {
-                $this->{$property} = $value;
+            ->getAttributes()
+            ->update($attributes)
+            ->each(function($value, $attribute) {
+                $this->{$attribute} = $value;
             });
 
         return $this;
@@ -274,9 +274,9 @@ trait Document
 
     private function ensureIndices()
     {
-        foreach ($this->getProperties() as $property => $value) {
-            if ($this->getFieldConfig($property, 'index') === true) {
-                Mango::getDocumentManager()->index($this, $property);
+        foreach ($this->getAttributes() as $attribute => $value) {
+            if ($this->getFieldConfig($attribute, 'index') === true) {
+                Mango::getDocumentManager()->index($this, $attribute);
             }
         }
     }
@@ -287,20 +287,20 @@ trait Document
      * @return MutableMap
      */
 
-    public function getDehydratedProperties()
+    public function getDehydratedAttributes()
     {
-        $properties = new MutableMap();
+        $attributes = new MutableMap();
         $dehydrator = new Dehydrator();
         $this->prepare();
 
-        foreach ($this->getProperties() as $name => $property) {
-            $type = $this->getFieldConfig($name, 'type');
-            $default = $this->getFieldConfig($name, 'default');
-            $value = $dehydrator->dehydrate($this->{$name}, $type, $default);
+        foreach ($this->getAttributes() as $attribute => $value) {
+            $type = $this->getFieldConfig($attribute, 'type');
+            $default = $this->getFieldConfig($attribute, 'default');
+            $value = $dehydrator->dehydrate($value, $type, $default);
 
-            $properties->set($name, $value);
+            $attributes->set($attribute, $value);
         }
 
-        return $properties;
+        return $attributes;
     }
 }

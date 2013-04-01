@@ -62,7 +62,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $query = ['name' => 'Foo Bar'];
 
         $user = $document::where($query)->first();
-        self::assertEquals($document->getDehydratedProperties(), $user->getDehydratedProperties());
+        self::assertEquals($document->getDehydratedAttributes(), $user->getDehydratedAttributes());
 
         $document->remove();
         self::assertEquals(0, $document::where($query)->count());
@@ -91,7 +91,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     {
         $mango = $this->getConnection();
         $document = new User();
-        $document->updateProperties(['name' => 'Updater']);
+        $document->update(['name' => 'Updater']);
 
         self::assertEquals('Updater', $document->name);
         $document->store();

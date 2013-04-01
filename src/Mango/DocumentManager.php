@@ -34,7 +34,7 @@ class DocumentManager
     public function store(DocumentInterface $document)
     {
         $collection = $this->connection->selectCollection($document::getCollectionName());
-        $data = $document->getDehydratedProperties()->getArray();
+        $data = $document->getDehydratedAttributes()->getArray();
         $collection->save($data);
     }
 
