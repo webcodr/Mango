@@ -21,7 +21,7 @@ trait Document
      * Constructor
      */
 
-    public function __construct(array $properties = array())
+    public function __construct(array $properties = [])
     {
         // set new MongoId on object creation
         $this->_id = new \MongoId();
@@ -33,7 +33,7 @@ trait Document
         $this->addFields();
 
         if (!empty($properties)) {
-            $this->hydrate($properties);
+            $this->updateProperties($properties);
         }
     }
 
@@ -82,7 +82,7 @@ trait Document
 
     private function reset()
     {
-        foreach($this->getProperties() as $name => $value) {
+        foreach ($this->getProperties() as $name => $value) {
             if ($name == '_id') {
                 $this->_id = new \MongoId();
             } else {
@@ -122,6 +122,7 @@ trait Document
 
         if (count($args) === 1) {
             $id = current($args);
+
             return self::where(['_id' => new \MongoId($id)]);
         }
 
@@ -152,7 +153,8 @@ trait Document
      * Hook method for parent class to initialize its field config
      */
 
-    private function addFields() {
+    private function addFields()
+    {
 
     }
 
@@ -245,6 +247,25 @@ trait Document
         }
 
         return $properties;
+    }
+
+    /**
+     * Update document properties from given array
+     *
+     * @param array $properties
+     * @return $this
+     */
+
+    public function updateProperties(array $properties = [])
+    {
+        $this
+            ->getProperties()
+            ->updateProperties($properties)
+            ->each(function($value, $property) {
+                $this->{$property} = $value;
+            });
+
+        return $this;
     }
 
     /**
