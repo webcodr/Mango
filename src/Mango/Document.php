@@ -8,6 +8,7 @@ use Mango\Type\String;
 
 
 use Collection\MutableMap;
+use Mango\Type\TypeInterface;
 
 /**
  * Trait Document
@@ -56,8 +57,11 @@ trait Document
 
     public function __set($attribute, $value)
     {
-        $type = $this->getFieldConfig($attribute, 'type');
-        $value = $this->hydrate($value, $type);
+        if (!$value instanceof TypeInterface) {
+            $type = $this->getFieldConfig($attribute, 'type');
+            $value = $this->hydrate($value, $type);
+        }
+
         $this->attributes->set($attribute, $value);
     }
 
