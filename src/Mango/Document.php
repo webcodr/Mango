@@ -33,7 +33,7 @@ trait Document
         // call hook method (can be overridden in parent class)
         $this->addFields();
 
-        $this->setHydrator(new Hydrator());
+        $this->hydrator = new Hydrator();
 
         if (!empty($attributes)) {
             $this->update($attributes);
@@ -49,6 +49,11 @@ trait Document
     {
         return $this->attributes->get($attribute);
     }
+
+    /**
+     * @param $attribute
+     * @param $value
+     */
 
     public function __set($attribute, $value)
     {
@@ -222,28 +227,6 @@ trait Document
     }
 
     /**
-     * Set Hydrator
-     *
-     * @param $hydrator
-     */
-
-    private function setHydrator($hydrator)
-    {
-        $this->hydrator = $hydrator;
-    }
-
-    /**
-     * Get Hydrator
-     *
-     * @return mixed
-     */
-
-    private function getHydrator()
-    {
-        return $this->hydrator;
-    }
-
-    /**
      * Hydrate given value
      *
      * @param $attribute
@@ -255,7 +238,7 @@ trait Document
     {
         $type = $this->getFieldConfig($attribute, 'type');
 
-        return $this->getHydrator()->hydrate($value, $type);
+        return $this->hydrator->hydrate($value, $type);
     }
 
     /**
