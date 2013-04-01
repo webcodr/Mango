@@ -83,6 +83,9 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         self::assertEquals(0, $document::where($query)->count());
         self::assertEquals(1, $document::where(['name' => 'Foo Bar 2'])->count());
 
+        $result = $document::where(['name' => 'Foo Bar 2'])->first();
+        self::assertInstanceOf('\DateTime', $result->updated_at);
+
         $document->remove();
         self::assertEquals(0, $document::find($user->getId())->count());
     }

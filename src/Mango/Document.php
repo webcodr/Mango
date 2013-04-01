@@ -15,6 +15,7 @@ use Collection\MutableMap;
 trait Document
 {
     private $fields = array();
+    private $hydrator;
     public $_id;
 
     /**
@@ -31,6 +32,8 @@ trait Document
 
         // call hook method (can be overridden in parent class)
         $this->addFields();
+
+        $this->setHydrator(new Hydrator());
 
         if (!empty($attributes)) {
             $this->update($attributes);
@@ -204,21 +207,40 @@ trait Document
     }
 
     /**
-     * Hydrate the object with cursor data
+     * Set Hydrator
      *
-     * @param array $data
+     * @param $hydrator
      */
 
-    private function hydrate(array $data)
+    private function setHydrator($hydrator)
     {
-        $hydrator = new Hydrator();
+        $this->hydrator = $hydrator;
+    }
 
-        foreach ($data as $attribute => $value) {
-            $type = $this->getFieldConfig($attribute, 'type');
-            $value = $hydrator->hydrate($value, $type);
+    /**
+     * Get Hydrator
+     *
+     * @return mixed
+     */
 
-            $this->{$attribute} = $value;
-        }
+    private function getHydrator()
+    {
+        return $this->hydrator;
+    }
+
+    /**
+     * Hydrate given value
+     *
+     * @param $attribute
+     * @param $value
+     * @return mixed
+     */
+
+    private function hydrate($attribute, $value)
+    {
+        $type = $this->getFieldConfig($attribute, 'type');
+
+        return $this->getHydrator()->hydrate($value, $type);
     }
 
     /**
@@ -262,7 +284,7 @@ trait Document
             ->getAttributes()
             ->update($attributes)
             ->each(function($value, $attribute) {
-                $this->{$attribute} = $value;
+                $this->{$attribute} = $this->hydrate($attribute, $value);
             });
 
         return $this;
