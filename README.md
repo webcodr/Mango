@@ -15,13 +15,9 @@
 
 #### Add Mango to your project
 
-Add the Mango package to your project's composer.json
-
+~~~ bash
+$ php composer.phar require webcodr/mango:*
 ~~~
-"webcodr/mango": "*@dev"
-~~~
-
-Run `php composer.phar install`
 
 #### Create a document class
 
