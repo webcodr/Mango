@@ -61,7 +61,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $document->store();
         $query = ['name' => 'Foo Bar'];
 
-        $user = $document::where($query)->head();
+        $user = $document::where($query)->first();
         self::assertEquals($document->getDehydratedProperties(), $user->getDehydratedProperties());
 
         $document->remove();
@@ -76,7 +76,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $document->store();
         $query = ['name' => 'Foo Bar'];
 
-        $user = $document::where($query)->head();
+        $user = $document::where($query)->first();
         $user->updated_at = new \DateTime('+4 hours');
         $user->name = 'Foo Bar 2';
         $user->store();

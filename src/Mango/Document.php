@@ -243,7 +243,7 @@ trait Document
 
         foreach ($reflectionClass->getProperties(\ReflectionProperty::IS_PUBLIC) as $property) {
             $name = $property->name;
-            $properties->setProperty($name, $this->{$name});
+            $properties->set($name, $this->{$name});
         }
 
         return $properties;
@@ -260,7 +260,7 @@ trait Document
     {
         $this
             ->getProperties()
-            ->updateProperties($properties)
+            ->update($properties)
             ->each(function($value, $property) {
                 $this->{$property} = $value;
             });
@@ -298,7 +298,7 @@ trait Document
             $default = $this->getFieldConfig($name, 'default');
             $value = $dehydrator->dehydrate($this->{$name}, $type, $default);
 
-            $properties->setProperty($name, $value);
+            $properties->set($name, $value);
         }
 
         return $properties;
