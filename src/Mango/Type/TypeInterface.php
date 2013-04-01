@@ -1,6 +1,6 @@
 <?php
 
-namespace Mango\Types;
+namespace Mango\Type;
 
 interface TypeInterface
 {

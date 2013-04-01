@@ -1,6 +1,6 @@
 <?php
 
-namespace Mango\Types;
+namespace Mango\Type;
 
 class Date implements TypeInterface
 {
@@ -14,8 +14,10 @@ class Date implements TypeInterface
 
     public function __construct($value = null)
     {
-        if($value instanceof \DateTime) {
+        if ($value instanceof \DateTime) {
             $value = $value->getTimestamp();
+        } elseif ($value instanceof \MongoDate) {
+            $value = $value->sec;
         } else {
             $timestamp = strtotime($value);
 

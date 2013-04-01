@@ -18,7 +18,6 @@
             "require": {
                 "php": ">=5.4"
             },
-            "time": "2013-04-01 16:11:11",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -42,15 +41,25 @@
             "keywords": [
                 "array",
                 "collection"
-            ]
+            ],
+            "time": "2013-04-01 16:11:11"
         }
     ],
-    "packages-dev": null,
+    "packages-dev": [
+
+    ],
     "aliases": [
 
     ],
     "minimum-stability": "stable",
     "stability-flags": [
+
+    ],
+    "platform": {
+        "php": ">=5.4.0",
+        "ext-mongo": ">=1.2.0"
+    },
+    "platform-dev": [
 
     ]
 }

@@ -2,8 +2,10 @@
 
 namespace Mango;
 
-use Mango\Helper\Hydrator;
-use Mango\Helper\Dehydrator;
+use Mango\Type\Date;
+use Mango\Type\Id;
+use Mango\Type\String;
+
 
 use Collection\MutableMap;
 
@@ -16,7 +18,6 @@ trait Document
 {
     private $fields = array();
     private $attributes;
-    private $hydrator;
 
     /**
      * Constructor
@@ -25,15 +26,13 @@ trait Document
     public function __construct(array $attributes = [])
     {
         $this->attributes = new MutableMap();
-        $this->_id = new \MongoId();
 
         // config for id field
         $this->addField('_id', ['type' => 'Id']);
+        $this->_id = new Id();
 
         // call hook method (can be overridden in parent class)
         $this->addFields();
-
-        $this->hydrator = new Hydrator();
 
         if (!empty($attributes)) {
             $this->update($attributes);
@@ -42,12 +41,12 @@ trait Document
 
     /**
      * @param $attribute
-     * @return \Collection\Habit\MutableMap
+     * @return \Collection\MutableMap
      */
 
     public function __get($attribute)
     {
-        return $this->attributes->get($attribute);
+        return $this->attributes->get($attribute)->getValue();
     }
 
     /**
@@ -57,7 +56,37 @@ trait Document
 
     public function __set($attribute, $value)
     {
+        $type = $this->getFieldConfig($attribute, 'type');
+        $value = $this->hydrate($value, $type);
         $this->attributes->set($attribute, $value);
+    }
+
+    /**
+     * @param $value
+     * @param null $type
+     * @return Date|String|Id
+     */
+
+    private function hydrate($value, $type = null)
+    {
+        switch ($type) {
+            case 'DateTime':
+                $value = new Date($value);
+                break;
+
+            case 'Id':
+                $value = new Id($value);
+                break;
+
+            case 'String':
+                $value = new String($value);
+                break;
+
+            default:
+                $value = new String($value);
+        }
+
+        return $value;
     }
 
     /**
@@ -68,7 +97,7 @@ trait Document
 
     public function getId()
     {
-        return (string)$this->_id;
+        return $this->_id;
     }
 
     /**
@@ -107,7 +136,7 @@ trait Document
     {
         foreach ($this->all() as $name => $value) {
             if ($name == '_id') {
-                $this->_id = new \MongoId();
+                $this->_id = new Id();
             } else {
                 $this->{$name} = null;
             }
@@ -227,21 +256,6 @@ trait Document
     }
 
     /**
-     * Hydrate given value
-     *
-     * @param $attribute
-     * @param $value
-     * @return mixed
-     */
-
-    private function hydrate($attribute, $value)
-    {
-        $type = $this->getFieldConfig($attribute, 'type');
-
-        return $this->hydrator->hydrate($value, $type);
-    }
-
-    /**
      * Hook method to prepare for storage
      */
 
@@ -274,7 +288,7 @@ trait Document
             ->all()
             ->update($attributes)
             ->each(function($value, $attribute) {
-                $this->{$attribute} = $this->hydrate($attribute, $value);
+                $this->{$attribute} = $value;
             });
 
         return $this;
@@ -302,16 +316,11 @@ trait Document
     public function getDehydratedAttributes()
     {
         $attributes = new MutableMap();
-        $dehydrator = new Dehydrator();
         $this->prepare();
 
-        foreach ($this->all() as $attribute => $value) {
-            $type = $this->getFieldConfig($attribute, 'type');
-            $default = $this->getFieldConfig($attribute, 'default');
-            $value = $dehydrator->dehydrate($value, $type, $default);
-
-            $attributes->set($attribute, $value);
-        }
+        $this->attributes->each(function($value, $attribute) use($attributes) {
+            $attributes->set($attribute, $value->getMongoType());
+        });
 
         return $attributes;
     }
