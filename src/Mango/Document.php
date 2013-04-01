@@ -15,8 +15,8 @@ use Collection\MutableMap;
 trait Document
 {
     private $fields = array();
+    private $attributes;
     private $hydrator;
-    public $_id;
 
     /**
      * Constructor
@@ -24,7 +24,7 @@ trait Document
 
     public function __construct(array $attributes = [])
     {
-        // set new MongoId on object creation
+        $this->attributes = new MutableMap();
         $this->_id = new \MongoId();
 
         // config for id field
@@ -38,6 +38,21 @@ trait Document
         if (!empty($attributes)) {
             $this->update($attributes);
         }
+    }
+
+    /**
+     * @param $attribute
+     * @return \Collection\Habit\MutableMap
+     */
+
+    public function __get($attribute)
+    {
+        return $this->attributes->get($attribute);
+    }
+
+    public function __set($attribute, $value)
+    {
+        $this->attributes->set($attribute, $value);
     }
 
     /**
@@ -85,7 +100,7 @@ trait Document
 
     private function reset()
     {
-        foreach ($this->getAttributes() as $name => $value) {
+        foreach ($this->all() as $name => $value) {
             if ($name == '_id') {
                 $this->_id = new \MongoId();
             } else {
@@ -258,17 +273,9 @@ trait Document
      * @return MutableMap
      */
 
-    public function getAttributes()
+    public function all()
     {
-        $reflectionClass = new \ReflectionClass($this);
-        $attributes = new MutableMap();
-
-        foreach ($reflectionClass->getProperties(\ReflectionProperty::IS_PUBLIC) as $attribute) {
-            $name = $attribute->name;
-            $attributes->set($name, $this->{$name});
-        }
-
-        return $attributes;
+        return $this->attributes->all();
     }
 
     /**
@@ -281,7 +288,7 @@ trait Document
     public function update(array $attributes = [])
     {
         $this
-            ->getAttributes()
+            ->all()
             ->update($attributes)
             ->each(function($value, $attribute) {
                 $this->{$attribute} = $this->hydrate($attribute, $value);
@@ -296,7 +303,7 @@ trait Document
 
     private function ensureIndices()
     {
-        foreach ($this->getAttributes() as $attribute => $value) {
+        foreach ($this->all() as $attribute => $value) {
             if ($this->getFieldConfig($attribute, 'index') === true) {
                 Mango::getDocumentManager()->index($this, $attribute);
             }
@@ -315,7 +322,7 @@ trait Document
         $dehydrator = new Dehydrator();
         $this->prepare();
 
-        foreach ($this->getAttributes() as $attribute => $value) {
+        foreach ($this->all() as $attribute => $value) {
             $type = $this->getFieldConfig($attribute, 'type');
             $default = $this->getFieldConfig($attribute, 'default');
             $value = $dehydrator->dehydrate($value, $type, $default);

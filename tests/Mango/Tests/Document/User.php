@@ -9,10 +9,6 @@ class User implements DocumentInterface
 {
     use Document;
 
-    public $created_at;
-    public $updated_at;
-    public $name;
-
     private function addFields()
     {
         $this->addField(

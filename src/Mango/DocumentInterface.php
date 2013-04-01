@@ -4,6 +4,6 @@ namespace Mango;
 
 interface DocumentInterface {
     public static function getCollectionName();
-    public function getAttributes();
+    public function all();
     public function getDehydratedAttributes();
 }
