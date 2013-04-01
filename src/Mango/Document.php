@@ -62,6 +62,16 @@ trait Document
     }
 
     /**
+     * @param $attribute
+     * @return bool
+     */
+
+    public function __isset($attribute)
+    {
+        return $this->attributes->has($attribute);
+    }
+
+    /**
      * @param $value
      * @param null $type
      * @return Date|String|Id
