@@ -313,12 +313,12 @@ trait Document
      * @return MutableMap
      */
 
-    public function getDehydratedAttributes()
+    public function allPrepared()
     {
         $attributes = new MutableMap();
         $this->prepare();
 
-        $this->attributes->each(function($value, $attribute) use($attributes) {
+        $this->all()->each(function($value, $attribute) use($attributes) {
             $attributes->set($attribute, $value->getMongoType());
         });
 

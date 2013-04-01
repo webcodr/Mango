@@ -62,7 +62,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $query = ['name' => 'Foo Bar'];
 
         $user = $document::where($query)->first();
-        self::assertEquals($document->getDehydratedAttributes(), $user->getDehydratedAttributes());
+        self::assertEquals($document->allPrepared(), $user->allPrepared());
 
         $document->remove();
         self::assertEquals(0, $document::where($query)->count());
