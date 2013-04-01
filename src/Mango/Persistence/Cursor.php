@@ -38,11 +38,16 @@ class Cursor implements \IteratorAggregate, \Countable
      * @param $method
      * @param $arguments
      * @return mixed
+     * @throws \BadMethodCallException
      */
 
     public function __call($method, $arguments)
     {
-        $object = (method_exists($this, $method)) ? $this : $this->getDocuments();
+        $object = $this->getDocuments();
+
+        if (!method_exists($object, $method)) {
+            throw new \BadMethodCallException("Method '{$$method}' does not exist.");
+        }
 
         return call_user_func_array(
             [$object, $method],
