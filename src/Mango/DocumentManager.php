@@ -2,8 +2,6 @@
 
 namespace Mango;
 
-use Collection\MutableMap;
-
 /**
  * Class DocumentManager
  * @package Mango
