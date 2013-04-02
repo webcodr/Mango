@@ -298,12 +298,11 @@ trait Document
 
     public function update(array $attributes = [])
     {
-        $this
-            ->all()
-            ->update($attributes)
-            ->each(function($value, $attribute) {
+        if (!empty($attributes)) {
+            foreach ($attributes as $attribute => $value) {
                 $this->{$attribute} = $value;
-            });
+            }
+        }
 
         return $this;
     }
