@@ -290,6 +290,23 @@ trait Document
     }
 
     /**
+     * Get all attributes as array
+     *
+     * @return array
+     */
+
+    public function getArray()
+    {
+        $attributes = [];
+
+        foreach ($this->attributes->all() as $attribute => $value) {
+            $attributes[$attribute] = $value->getValue();
+        }
+
+        return $attributes;
+    }
+
+    /**
      * Update document properties from given array
      *
      * @param array $attributes
