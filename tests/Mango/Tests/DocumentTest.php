@@ -110,7 +110,6 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $mango = $this->getConnection();
         $document = new User();
         $document->store();
-        print_r($document);
 
         self::assertEquals('UnitTest', $document->name);
         $document->remove();
