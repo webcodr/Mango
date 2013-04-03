@@ -124,7 +124,7 @@ User::where()->each(function($user) {
 ~~~ php
 $user = User::where(['name' => 'William Adama']);
 echo $user->count(); // result = 1
-echo $user->head()->email; // result = william.adama@galactica.colonial-forces.gov
+echo $user->first()->email; // result = william.adama@galactica.colonial-forces.gov
 ~~~
 
 
