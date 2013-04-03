@@ -40,10 +40,8 @@ class User implements DocumentInterface
 
     private function addFields()
     {
-        $this->addField(
-            'name',
-            []
-        );
+        $this->addField('name', ['type' => 'String']);
+        $this->addField('email', ['type' => 'String']);
 
         $this->addField(
             'created_at',
@@ -109,13 +107,13 @@ Mango uses object hydration to automatically provide a result with document obje
 ###### One id
 
 ~~~ php
-$user = User::find('abc')->head();
+$user = User::find('abc')->first();
 ~~~
 
 ###### Multiple ids
 
 ~~~ php
-$user = User::find('abc', 'def', 'ghi')->head();
+$user = User::find('abc', 'def', 'ghi')->first();
 ~~~
 
 ##### Find all documents in collection
