@@ -33,11 +33,6 @@ class User implements DocumentInterface
 {
     use Document;
 
-    public $created_at;
-    public $updated_at;
-    public $name;
-    public $email;
-
     private function addFields()
     {
         $this->addField('name', ['type' => 'String']);
