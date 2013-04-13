@@ -28,7 +28,10 @@ trait Document
     public function __construct(array $attributes = [], DocumentManager $dm = null)
     {
         $this->attributes = new MutableMap();
-        self::$documentManager = ($dm !== null) ? $dm : Mango::getDocumentManager();
+
+        if ($dm !== null) {
+            self::setDocumentManager($dm);
+        }
 
         // config for id field
         $this->addField('_id', ['type' => 'Id']);
@@ -40,6 +43,33 @@ trait Document
         if (!empty($attributes)) {
             $this->update($attributes);
         }
+    }
+
+    /**
+     * Get document manager
+     *
+     * @return DocumentManager
+     */
+
+    public static function getDocumentManager()
+    {
+        // get default document manager if none was set
+        if (self::$documentManager === null) {
+            self::setDocumentManager(Mango::getDocumentManager());
+        }
+
+        return self::$documentManager;
+    }
+
+    /**
+     * Set document manager
+     *
+     * @param DocumentManager $dm
+     */
+
+    public static function setDocumentManager(DocumentManager $dm)
+    {
+        self::$documentManager = $dm;
     }
 
     /**
@@ -125,7 +155,7 @@ trait Document
     public function store()
     {
         $this->ensureIndices();
-        self::$documentManager->store($this);
+        self::getDocumentManager()->store($this);
 
         return $this;
     }
@@ -138,7 +168,7 @@ trait Document
 
     public function remove()
     {
-        self::$documentManager->remove($this);
+        self::getDocumentManager()->remove($this);
         $this->reset();
 
         return $this;
@@ -212,9 +242,11 @@ trait Document
 
     public static function where(array $query = [])
     {
-        $dm = self::$documentManager;
-
-        return $dm->where(self::getCollectionName(), $query, __CLASS__);
+        return self::getDocumentManager()->where(
+            self::getCollectionName(),
+            $query,
+            __CLASS__
+        );
     }
 
     /**
@@ -334,7 +366,7 @@ trait Document
     {
         foreach ($this->all() as $attribute => $value) {
             if ($this->getFieldConfig($attribute, 'index') === true) {
-                self::$documentManager->index($this, $attribute);
+                self::getDocumentManager()->index($this, $attribute);
             }
         }
     }
