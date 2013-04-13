@@ -23,6 +23,8 @@ class Date implements TypeInterface
 
             if ($timestamp !== false) {
                 $value = $timestamp;
+            } else {
+                $value = 0;
             }
         }
 

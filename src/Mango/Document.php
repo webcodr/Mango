@@ -39,9 +39,18 @@ trait Document
 
         // call hook method (can be overridden in parent class)
         $this->addFields();
+        $this->initAttributes();
 
         if (!empty($attributes)) {
             $this->update($attributes);
+        }
+    }
+
+    private function initAttributes()
+    {
+        foreach ($this->fields as $field) {
+            $attribute = $field['name'];
+            $this->{$attribute} = null;
         }
     }
 
@@ -384,7 +393,7 @@ trait Document
         foreach ($this->fields as $field) {
             $attribute = $field['name'];
 
-            if (!$this->attributes->has($attribute)) {
+            if ($this->attributes->has($attribute) && $this->attributes->get($attribute)->getValue() === null) {
                 $this->{$attribute} = $this->getFieldConfig($attribute, 'default');
             }
         }
