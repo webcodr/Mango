@@ -100,6 +100,11 @@ trait Document
     {
         if (!$value instanceof TypeInterface) {
             $type = $this->getFieldConfig($attribute, 'type');
+
+            if ($value === null) {
+                $value = $this->getFieldConfig($attribute, 'default');
+            }
+
             $value = $this->hydrate($value, $type);
         }
 
@@ -389,15 +394,6 @@ trait Document
     public function allPrepared()
     {
         $attributes = new MutableMap();
-
-        foreach ($this->fields as $field) {
-            $attribute = $field['name'];
-
-            if ($this->attributes->has($attribute) && $this->attributes->get($attribute)->getValue() === null) {
-                $this->{$attribute} = $this->getFieldConfig($attribute, 'default');
-            }
-        }
-
         $this->prepare();
 
         $this->all()->each(function($value, $attribute) use($attributes) {
