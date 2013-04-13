@@ -20,7 +20,7 @@ class DocumentManager
     public function __construct(Mango $mango)
     {
         $this->connection = $mango->getConnection();
-        Mango::setDocumentManager($this);
+        $mango::setDocumentManager($this);
     }
 
     /**

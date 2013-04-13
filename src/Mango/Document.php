@@ -19,14 +19,16 @@ trait Document
 {
     private $fields = array();
     private $attributes;
+    private static $documentManager;
 
     /**
      * Constructor
      */
 
-    public function __construct(array $attributes = [])
+    public function __construct(array $attributes = [], DocumentManager $dm = null)
     {
         $this->attributes = new MutableMap();
+        self::$documentManager = ($dm !== null) ? $dm : Mango::getDocumentManager();
 
         // config for id field
         $this->addField('_id', ['type' => 'Id']);
@@ -123,7 +125,7 @@ trait Document
     public function store()
     {
         $this->ensureIndices();
-        Mango::getDocumentManager()->store($this);
+        self::$documentManager->store($this);
 
         return $this;
     }
@@ -136,7 +138,7 @@ trait Document
 
     public function remove()
     {
-        Mango::getDocumentManager()->remove($this);
+        self::$documentManager->remove($this);
         $this->reset();
 
         return $this;
@@ -210,7 +212,7 @@ trait Document
 
     public static function where(array $query = [])
     {
-        $dm = Mango::getDocumentManager();
+        $dm = self::$documentManager;
 
         return $dm->where(self::getCollectionName(), $query, __CLASS__);
     }
@@ -332,7 +334,7 @@ trait Document
     {
         foreach ($this->all() as $attribute => $value) {
             if ($this->getFieldConfig($attribute, 'index') === true) {
-                Mango::getDocumentManager()->index($this, $attribute);
+                self::$documentManager->index($this, $attribute);
             }
         }
     }
