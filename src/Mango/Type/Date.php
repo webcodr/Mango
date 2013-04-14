@@ -37,7 +37,11 @@ class Date implements TypeInterface
 
     public function getMongoType()
     {
-        return new \MongoDate($this->value);
+        if ($this->value !== null) {
+            return new \MongoDate($this->value);
+        }
+
+        return null;
     }
 
     /**
