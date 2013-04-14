@@ -101,6 +101,10 @@ trait Document
         if (!$value instanceof TypeInterface) {
             $type = $this->getFieldConfig($attribute, 'type');
 
+            if (empty($value)) {
+                $value = null;
+            }
+
             if ($value === null) {
                 $value = $this->getFieldConfig($attribute, 'default');
             }
