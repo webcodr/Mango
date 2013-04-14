@@ -23,8 +23,6 @@ class Date implements TypeInterface
 
             if ($timestamp !== false) {
                 $value = $timestamp;
-            } else {
-                $value = 0;
             }
         }
 
@@ -50,6 +48,10 @@ class Date implements TypeInterface
 
     public function getValue()
     {
-        return new \DateTime("@{$this->value}");
+        if ($this->value !== null) {
+            return new \DateTime("@{$this->value}");
+        }
+
+        return null;
     }
 }
