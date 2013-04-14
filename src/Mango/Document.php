@@ -126,6 +126,24 @@ trait Document
     }
 
     /**
+     * Unsets an attribute by name or value
+     *
+     * @param $var
+     * @return $this|bool
+     */
+
+    public function __unset($var)
+    {
+        if ($this->attributes->has($var)) {
+            return $this->attributes->remove($var);
+        } elseif ($this->attributes->index($var) !== false) {
+            return $this->attributes->delete($var);
+        }
+
+        return false;
+    }
+
+    /**
      * @param $value
      * @param null $type
      * @return Date|String|Id
