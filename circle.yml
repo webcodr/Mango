@@ -1,0 +1,11 @@
+machine:
+  php:
+    version: 5.4.15
+
+depedencies:
+  pre:
+    - pecl install mongo
+
+test:
+  override:
+    - phpunit
