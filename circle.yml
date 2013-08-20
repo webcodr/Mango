@@ -2,7 +2,7 @@ machine:
   php:
     version: 5.4.15
 
-depedencies:
+dependencies:
   pre:
     - pecl install mongo
 
