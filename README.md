@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/WebCodr/Mango.png?branch=master)](https://travis-ci.org/WebCodr/Mango)
 
+[![PHP version](https://badge.fury.io/ph/WebCodr%2FMango.png)](http://badge.fury.io/ph/WebCodr%2FMango)
+
 ### A MongoDB object document mapper for PHP
 #### Inspired by [Mongoid for Ruby](http://mongoid.org/en/mongoid/index.html)
 
